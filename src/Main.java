@@ -180,6 +180,36 @@ public class Main {
         System.out.println("Valor médio por item da lista de compras: " + (valorTotal/linhas) + " R$");
     }
 
+    public static void ordenarListaDeFormaCrescente(String[][] matriz, int linhas) {
+        for (int i = 0; i < linhas - 1; i++) {
+            for (int j = 0; j < linhas - i - 1; j++) {
+                if (matriz[j][3] != null && matriz[j + 1][3] != null) {
+                    float valorAtual = Float.parseFloat(matriz[j][3]);
+                    float valorSeguinte = Float.parseFloat(matriz[j + 1][3]);
+
+                    if (valorAtual > valorSeguinte) {
+                        String[] temp = matriz[j];
+                        matriz[j] = matriz[j + 1];
+                        matriz[j + 1] = temp;
+                    }
+                }
+            }
+        }
+        
+
+    System.out.println("Lista de produtos ordenada por valor:");
+
+        for (int i = 0; i < linhas; i++) {
+            if (matriz[i][0] != null) {
+                System.out.print((i + 1) + " - ");
+                for (int j = 0; j < matriz[i].length; j++) {
+                    System.out.print(matriz[i][j] + " | ");
+                }
+                System.out.println();
+            }
+        }
+    }
+
     public static void main(String[] args) {
         String[][] lista;
         int produtos, opcao;
@@ -194,7 +224,7 @@ public class Main {
         lista = new String[produtos][colunas];
 
         do {
-            System.out.println("Escolha uma opção: \n 1 - Mostrar lista de compras. \n 2 - Inserir produtos na lista de compras. \n 3 - Calcular valor dos produtos da lista de compras. \n 4 - Calcular valor médio por item da lista. \n 5 - Buscar produto da lista de compras. \n 6 - Definir quantidade limite. \n 0 - Sair.");
+            System.out.println("Escolha uma opção: \n 1 - Mostrar lista de compras. \n 2 - Inserir produtos na lista de compras. \n 3 - Calcular valor dos produtos da lista de compras. \n 4 - Calcular valor médio por item da lista. \n 5 - Buscar produto da lista de compras. \n 6 - Definir quantidade limite. \n 7 - Ordenar lista de forma crescente. \n 0 - Sair.");
 
             opcao = scanner.nextInt();
             switch (opcao) {
@@ -227,6 +257,10 @@ public class Main {
                     quantidadeLimite = definirQuantidadeLimite();
                     limiteDefinido = true;
                     verificaSeTodosEstaoDentroDoLimite(lista, produtos, quantidadeLimite, limiteDefinido);
+                    break;
+
+                case 7:
+                    ordenarListaDeFormaCrescente(lista, produtos);
                     break;
 
                 default:
