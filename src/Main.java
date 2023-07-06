@@ -17,7 +17,7 @@ public class Main {
         System.out.println("Insira a quantidade de produtos: ");
         matriz[linha - 1][1] = scanner.next();
         if (limiteDefinido) {
-            verificaSeTodosEstaoDentroDoLimite(matriz, linhas, quantidadeLimite);
+            verificaSeTodosEstaoDentroDoLimite(matriz, linhas, quantidadeLimite, limiteDefinido);
         }
         System.out.print("Insira o valor do produto: ");
         matriz[linha - 1][2] = scanner.next();
@@ -43,13 +43,13 @@ public class Main {
         Float valorFinal = 0.0f;
         for (int i = 0; i < linhas; i++) {
             if (matriz[i][0] != null) {
-                valorFinal = valorFinal + Float.parseFloat(matriz[i][1]) * Float.parseFloat(matriz[i][2]);
+                valorFinal = valorFinal + Float.parseFloat(matriz[i][3]);
             }
         }
         System.out.println("Valor final da lista de compras: " + valorFinal + " R$");
     }
 
-    public static void buscarProduto(String[][] lista, int produtos, String nomeProduto, int quantidadeLimite) {
+    public static void buscarProduto(String[][] lista, int produtos, String nomeProduto, int quantidadeLimite, boolean limiteDefinido) {
         Scanner scanner = new Scanner(System.in);
         boolean encontrado = false;
         int opcaoBusca;
@@ -71,7 +71,7 @@ public class Main {
             case 0:
                 break;
             case 1:
-                atualizarProduto(lista, produtos, nomeProduto, quantidadeLimite);
+                atualizarProduto(lista, produtos, nomeProduto, quantidadeLimite, limiteDefinido);
                 break;
             case 2:
                 removerProduto(lista, produtos, nomeProduto);
@@ -86,19 +86,18 @@ public class Main {
         }
     }
 
-    public static void atualizarProduto(String[][] matriz, int linhas, String nomeProduto, int quantidadeLimite) {
+    public static void atualizarProduto(String[][] matriz, int linhas, String nomeProduto, int quantidadeLimite, boolean limiteDefinido) {
         int i;
 
         for (i = 0; i < linhas; i++) {
             if (matriz[i][0] != null && matriz[i][0].equals(nomeProduto)) {
                 atualizarNomeDoProduto(matriz, i);
 
-                atualizarQuantidadeDoProduto(matriz, i, quantidadeLimite);
+                atualizarQuantidadeDoProduto(matriz, i, quantidadeLimite, limiteDefinido);
 
                 atualizarValorDoProduto(matriz, i);
             }
         }
-        matriz[i - 1][3] = Float.toString(Float.parseFloat(matriz[i - 1][1]) * Float.parseFloat(matriz[i - 1][2])); 
     }
 
     public static void atualizarNomeDoProduto(String[][] matriz, int i) {
@@ -108,12 +107,19 @@ public class Main {
         matriz[i][0] = scanner.next();
     }
 
-    public static void atualizarQuantidadeDoProduto(String[][] matriz, int i, int quantidadeLimite) {
+    public static void atualizarQuantidadeDoProduto(String[][] matriz, int i, int quantidadeLimite, boolean limiteDefinido) {
         Scanner scanner = new Scanner(System.in);
-        do {
-            System.out.print("Insira a nova quantidade de produtos, ela deve ser menor do que ou igual a " + quantidadeLimite +": ");
-            matriz[i][1] = scanner.next();
-        } while (Integer.parseInt(matriz[i][1]) > quantidadeLimite);
+
+        if (limiteDefinido) {
+            do {
+                System.out.print("Insira a nova quantidade de produtos, ela deve ser menor do que ou igual a " + quantidadeLimite +": ");
+                matriz[i][1] = scanner.next();
+            } while (Integer.parseInt(matriz[i][1]) > quantidadeLimite);
+        }
+        else {
+            System.out.print("Insira a nova quantidade de produtos: ");
+                matriz[i][1] = scanner.next();
+        }
 
         if (matriz[i][3] != null) {
             matriz[i][3] = Float.toString(Float.parseFloat(matriz[i][1]) * Float.parseFloat(matriz[i][2]));
@@ -152,14 +158,14 @@ public class Main {
         return quantidadeLimite;
     }
 
-    public static void verificaSeTodosEstaoDentroDoLimite(String[][] matriz, int linhas, int quantidadeLimite) {
+    public static void verificaSeTodosEstaoDentroDoLimite(String[][] matriz, int linhas, int quantidadeLimite, boolean limiteDefinido) {
         int nomeDoProduto = 0;
         int quantidadeDeProdutos = 1; // O índice da quantidade de um produto é matriz[linhaDoProduto][1]
 
         for (int i = 0; i < linhas; i++) {
             if (matriz[i][quantidadeDeProdutos] != null && Integer.parseInt(matriz[i][quantidadeDeProdutos]) > quantidadeLimite) {
                 System.out.println("O produto '" + matriz[i][nomeDoProduto] + "' ultrapassou a quantidade limite.");
-                atualizarQuantidadeDoProduto(matriz, i, quantidadeLimite);
+                atualizarQuantidadeDoProduto(matriz, i, quantidadeLimite, limiteDefinido);
             }
         }
     }
@@ -200,13 +206,13 @@ public class Main {
                 case 4:
                     System.out.print("Insira o produto a ser buscado: ");
                     nomeProduto = scanner.next();
-                    buscarProduto(lista, produtos, nomeProduto, quantidadeLimite);
+                    buscarProduto(lista, produtos, nomeProduto, quantidadeLimite, limiteDefinido);
                     break;
 
                 case 5:
                     quantidadeLimite = definirQuantidadeLimite();
                     limiteDefinido = true;
-                    verificaSeTodosEstaoDentroDoLimite(lista, produtos, quantidadeLimite);
+                    verificaSeTodosEstaoDentroDoLimite(lista, produtos, quantidadeLimite, limiteDefinido);
                     break;
 
                 default:
