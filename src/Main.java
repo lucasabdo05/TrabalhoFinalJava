@@ -170,6 +170,16 @@ public class Main {
         }
     }
 
+    public static void calcularValorMedio(String[][] matriz, int linhas) {
+        Float valorTotal = 0.0f;
+        for (int i = 0; i < linhas; i++) {
+            if (matriz[i][0] != null) {
+                valorTotal = valorTotal + Float.parseFloat(matriz[i][3]);
+            }
+        }
+        System.out.println("Valor médio por item da lista de compras: " + (valorTotal/linhas) + " R$");
+    }
+
     public static void main(String[] args) {
         String[][] lista;
         int produtos, opcao;
@@ -184,7 +194,7 @@ public class Main {
         lista = new String[produtos][colunas];
 
         do {
-            System.out.println("Escolha uma opção: \n 1 - Mostrar lista de compras. \n 2 - Inserir produtos na lista de compras. \n 3 - Calcular valor dos produtos da lista de compras. \n 4 - Buscar produto da lista de compras. \n 5 - Definir quantidade limite. \n 0 - Sair.");
+            System.out.println("Escolha uma opção: \n 1 - Mostrar lista de compras. \n 2 - Inserir produtos na lista de compras. \n 3 - Calcular valor dos produtos da lista de compras. \n 4 - Calcular valor médio por item da lista. \n 5 - Buscar produto da lista de compras. \n 6 - Definir quantidade limite. \n 0 - Sair.");
 
             opcao = scanner.nextInt();
             switch (opcao) {
@@ -204,12 +214,16 @@ public class Main {
                     break;
 
                 case 4:
+                    calcularValorMedio(lista, produtos);
+                    break;
+
+                case 5:
                     System.out.print("Insira o produto a ser buscado: ");
                     nomeProduto = scanner.next();
                     buscarProduto(lista, produtos, nomeProduto, quantidadeLimite, limiteDefinido);
                     break;
 
-                case 5:
+                case 6:
                     quantidadeLimite = definirQuantidadeLimite();
                     limiteDefinido = true;
                     verificaSeTodosEstaoDentroDoLimite(lista, produtos, quantidadeLimite, limiteDefinido);
