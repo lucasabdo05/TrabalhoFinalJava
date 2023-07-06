@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void inserirProdutos(String[][] matriz, int linhas, int colunas) {
+    public static void inserirProdutos(String[][] matriz, int linhas, int colunas, boolean limiteDefinido, int quantidadeLimite) {
         Scanner scanner = new Scanner(System.in);
         int linha;
 
@@ -16,7 +16,10 @@ public class Main {
         matriz[linha - 1][0] = scanner.next();
         System.out.println("Insira a quantidade de produtos: ");
         matriz[linha - 1][1] = scanner.next();
-        System.out.println("Insira o valor do produto: ");
+        if (limiteDefinido) {
+            verificaSeTodosEstaoDentroDoLimite(matriz, linhas, quantidadeLimite);
+        }
+        System.out.print("Insira o valor do produto: ");
         matriz[linha - 1][2] = scanner.next();
         System.out.println("Produto adicionado.");
         matriz[linha - 1][3] = Float.toString(Float.parseFloat(matriz[linha - 1][1]) * Float.parseFloat(matriz[linha - 1][2])); // Calculo da coluna total
@@ -112,7 +115,9 @@ public class Main {
             matriz[i][1] = scanner.next();
         } while (Integer.parseInt(matriz[i][1]) > quantidadeLimite);
 
-        matriz[i][3] = Float.toString(Float.parseFloat(matriz[i][1]) * Float.parseFloat(matriz[i][2]));
+        if (matriz[i][3] != null) {
+            matriz[i][3] = Float.toString(Float.parseFloat(matriz[i][1]) * Float.parseFloat(matriz[i][2]));
+        }
     }
 
     public static void atualizarValorDoProduto(String[][] matriz, int i) {
@@ -166,6 +171,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         String nomeProduto;
         int quantidadeLimite = 0;
+        boolean limiteDefinido = false;
 
         System.out.print("Insira a quantidade de produtos que serão inseridos na sua lista de compras: ");
         produtos = scanner.nextInt();
@@ -184,7 +190,7 @@ public class Main {
                     break;
 
                 case 2:
-                    inserirProdutos(lista, produtos, colunas);
+                    inserirProdutos(lista, produtos, colunas, limiteDefinido, quantidadeLimite);
                     break;
                     
                 case 3:
@@ -199,6 +205,7 @@ public class Main {
 
                 case 5:
                     quantidadeLimite = definirQuantidadeLimite();
+                    limiteDefinido = true;
                     verificaSeTodosEstaoDentroDoLimite(lista, produtos, quantidadeLimite);
                     break;
 
