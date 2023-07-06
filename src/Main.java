@@ -226,6 +226,7 @@ public class Main {
         do {
             System.out.println("Escolha uma opção: \n 1 - Mostrar lista de compras. \n 2 - Inserir produtos na lista de compras. \n 3 - Calcular valor dos produtos da lista de compras. \n 4 - Calcular valor médio por item da lista. \n 5 - Buscar produto da lista de compras. \n 6 - Definir quantidade limite. \n 7 - Ordenar lista de forma crescente. \n 0 - Sair.");
 
+            System.out.print("Opção: ");
             opcao = scanner.nextInt();
             switch (opcao) {
                 case 0:
